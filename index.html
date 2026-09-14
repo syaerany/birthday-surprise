@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Berpayung Tuhan</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(120,90,50,.12), transparent 35%),
+    #e8ddc9;
+
+  color: #443b2f;
+  font-family: Georgia, "Times New Roman", serif;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(80,60,40,.025) 0px,
+      rgba(80,60,40,.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+
+  pointer-events: none;
+}
+
+.page {
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+
+
+/* PASSWORD */
+
+.lock {
+  padding: 35px 20px;
+}
+
+.lock h1 {
+  font-size: 23px;
+  font-weight: normal;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+input {
+  width: 145px;
+  padding: 12px;
+
+  border: none;
+  border-bottom: 1px solid #776b5b;
+
+  background: transparent;
+
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 18px;
+
+  outline: none;
+}
+
+.unlock {
+  margin-top: 22px;
+
+  padding: 9px 23px;
+
+  border: 1px solid #776b5b;
+  border-radius: 20px;
+
+  background: transparent;
+  color: #443b2f;
+
+  font-family: Georgia, serif;
+}
+
+
+/* MEMORY */
+
+#memoryPage {
+  display: none;
+}
+
+.photo-box {
+  width: 100%;
+  height: 430px;
+
+  padding: 12px;
+
+  background: #f3eadb;
+
+  box-shadow:
+    0 8px 20px rgba(60,45,30,.18);
+
+  transform: rotate(-1deg);
+
+  margin-bottom: 30px;
+}
+
+.photo-box img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter:
+    sepia(.18)
+    saturate(.85)
+    contrast(.95);
+}
+
+
+/* SONG TITLE */
+
+.player-title {
+  font-size: 19px;
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+
+/* PROGRESS */
+
+.progress {
+  width: 100%;
+  height: 1px;
+
+  background: #a99c88;
+
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #443b2f;
+}
+
+
+/* PLAY BUTTON */
+
+.play {
+  width: 55px;
+  height: 55px;
+
+  border-radius: 50%;
+
+  border: 1px solid #5d5142;
+
+  background: #443b2f;
+
+  color: #eee3d2;
+
+  font-size: 18px;
+
+  font-family: Georgia, serif;
+
+  box-shadow:
+    0 4px 10px rgba(60,45,30,.18);
+}
+
+.play:active {
+  transform: scale(.95);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 380px) {
+
+  .photo-box {
+    height: 380px;
+  }
+
+  .player-title {
+    font-size: 16px;
+    letter-spacing: 3px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+  <!-- PASSWORD -->
+
+  <div class="lock" id="lockPage">
+
+    <h1>
+      How old are you now, Piyan? 👀
+    </h1>
+
+    <input
+      id="answer"
+      type="number"
+      placeholder="?"
+    >
+
+    <br>
+
+    <button
+      class="unlock"
+      onclick="unlock()"
+    >
+      Enter
+    </button>
+
+  </div>
+
+
+  <!-- MEMORY -->
+
+  <div id="memoryPage">
+
+    <div class="photo-box">
+
+      <img
+        id="photo"
+        src="WA_1789352123023.jpg"
+      >
+
+    </div>
+
+
+    <div class="player-title">
+      BERPAYUNG TUHAN
+    </div>
+
+
+    <div class="progress">
+
+      <div
+        class="progress-bar"
+        id="progressBar"
+      ></div>
+
+    </div>
+
+
+    <button
+      class="play"
+      onclick="togglePlay()"
+      id="playButton"
+    >
+      ▶
+    </button>
+
+
+    <audio
+      id="audio"
+      src="video_to_mp3_0914_1538.mp3"
+    ></audio>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+/* PHOTOS */
+
+const photos = [
+
+  "WA_1789352123023.jpg",
+  "WA_1789352127053.jpg",
+  "WA_1789352152974.jpg",
+  "WA_1789352163772.jpg",
+  "WA_1789352200384.jpg",
+  "WA_1789352288389.jpg",
+  "WA_1789352308370.jpg",
+  "WA_1789352338623.jpg",
+  "WA_1789352368754.jpg",
+  "WA_1789352436298.jpg",
+  "WA_1789352481190.jpg",
+  "WA_1789352498496.jpg",
+  "WA_1789352508672.jpeg",
+  "WA_1789352517193.jpg",
+  "WA_1789352525966.jpg"
+
+];
+
+
+let currentPhoto = 0;
+let slideshow;
+
+
+const audio =
+  document.getElementById("audio");
+
+const photo =
+  document.getElementById("photo");
+
+const playButton =
+  document.getElementById("playButton");
+
+const progressBar =
+  document.getElementById("progressBar");
+
+
+/* PASSWORD */
+
+function unlock() {
+
+  const answer =
+    document.getElementById("answer").value;
+
+  if (answer === "19") {
+
+    document.getElementById("lockPage")
+      .style.display = "none";
+
+    document.getElementById("memoryPage")
+      .style.display = "block";
+
+  } else {
+
+    alert("Wrong answer 👀");
+
+  }
+
+}
+
+
+/* PLAY / PAUSE */
+
+function togglePlay() {
+
+  if (audio.paused) {
+
+    audio.play();
+
+    playButton.textContent = "❚❚";
+
+
+    slideshow = setInterval(() => {
+
+      currentPhoto++;
+
+      if (currentPhoto >= photos.length) {
+        currentPhoto = 0;
+      }
+
+      photo.src = photos[currentPhoto];
+
+    }, 3000);
+
+
+  } else {
+
+    audio.pause();
+
+    playButton.textContent = "▶";
+
+    clearInterval(slideshow);
+
+  }
+
+}
+
+
+/* PROGRESS */
+
+audio.addEventListener(
+  "timeupdate",
+  () => {
+
+    if (audio.duration) {
+
+      const percent =
+        (audio.currentTime /
+        audio.duration) * 100;
+
+      progressBar.style.width =
+        percent + "%";
+
+    }
+
+  }
+);
+
+
+/* END */
+
+audio.addEventListener(
+  "ended",
+  () => {
+
+    playButton.textContent = "▶";
+
+    clearInterval(slideshow);
+
+    currentPhoto = 0;
+
+    photo.src = photos[0];
+
+    progressBar.style.width = "0%";
+
+  }
+);
+
+
+</script>
+
+</body>
+</html>
